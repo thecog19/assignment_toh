@@ -11,10 +11,11 @@ class ToH
       $bar1.push(height)
       height -= 1
     end
+    $winner = $bar1.clone
     return
   end    
 
-  def self.intitialize()
+  def self.runprogram()
     #from here all the logic runs
     height = self.start()
     self.gentower(height)
@@ -66,8 +67,13 @@ class ToH
     puts "Time to make a move."
     puts "From where would you like to move?"
     puts "Towers are numbered 1, 2 and 3 from left to right"
+    puts "(Type quit to quit)"
 
     firstnum = gets
+    if firstnum.strip == "quit"
+      self.quitgame()
+    end
+
     if (firstnum.to_i == 1)||(firstnum.to_i == 2)||(firstnum.to_i == 3)
       if $master[firstnum.to_i].empty? == true
         self.illegalmove("empty")
@@ -76,14 +82,19 @@ class ToH
         puts "moving from position #{firstnum.strip} to?"
         moving = $master[firstnum.to_i].pop()
       end
-      #QUIT STUFF WILL GO HERE
+
     else 
       self.illegalmove()
       return
     end
 
     secondnum = gets
+     if secondnum.strip == "quit"
+      self.quitgame()
+    end
+
     if secondnum.strip == firstnum.strip
+      $master[secondnum.to_i].push(moving) 
       self.illegalmove()
     elsif (secondnum.to_i == 1)||(secondnum.to_i == 2)||(secondnum.to_i == 3)
       if $master[secondnum.to_i][0] == nil
@@ -97,11 +108,12 @@ class ToH
         puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
         $master[secondnum.to_i].push(moving) 
       end
-        #QUIT STUFF WILL GO HERE
     else
       $master[firstnum.to_i].push(moving)
       self.illegalmove()
     end
+
+    self.checkwin()
   end
 
   def self.illegalmove(reason = "undef")
@@ -117,6 +129,20 @@ class ToH
   end
 
   def self.checkwin()
+    if ($bar2 == $winner) || ($bar3 == $winner)
+      self.win()
+    end
+  end
+
+  def self.win()
+    puts "You won!"
+    puts "Would you like to play again? Y to play again."
+    yesorno = gets
+        if yesorno.strip == "Y"
+          self.runprogram()
+        else
+          self.quitgame()
+        end
   end
 
   def self.quitgame()
@@ -126,9 +152,26 @@ class ToH
   end
 
   def self.display()
-    print "\n #{$bar1}"
-    print "\n #{$bar2}"
-    print "\n #{$bar3}\n"
+
+    print "\n"
+    
+    $bar1.reverse.each do |row|
+      puts "o" * row.to_i
+    end
+    puts "bar 1"
+    print "\n"
+
+    $bar2.reverse.each do |row|
+      puts "o" * row.to_i
+    end
+    puts "bar 2"
+    print "\n"
+
+    $bar3.reverse.each do |row|
+      puts "o" * row.to_i
+    end
+    puts "bar 3"
+    print "\n"
   end
 
 
@@ -137,4 +180,4 @@ end
 
 a = ToH
 
-a.intitialize()
+a.runprogram()
