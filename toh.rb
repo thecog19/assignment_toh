@@ -10,12 +10,16 @@ class ToH
       $bar1.push(height)
       height -= 1
     end
+    return
   end    
 
   def self.intitialize()
     #from here all the logic runs
     height = self.start()
     self.gentower(height)
+    while true
+      self.makemove()
+    end
   end
 
   def self.start()
@@ -61,10 +65,24 @@ class ToH
     puts "From where would you like to move?"
     puts "Towers are numbered 1, 2 and 3 from left to right"
     firstnum = gets
-    puts "#{firstnum.to_i}"
+    if (firstnum.to_i == 1)||(firstnum.to_i == 2)||(firstnum.to_i == 3)
+      puts "moving from position #{firstnum.strip} to?"
+    else 
+      self.illegalmove()
+    end
+    secondnum = gets
+    if secondnum.strip == firstnum.strip
+      self.illegalmove()
+    elsif (secondnum.to_i == 1)||(secondnum.to_i == 2)||(secondnum.to_i == 3)
+      puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
+    else
+      self.illegalmove()
+    end
+      
   end
 
   def self.illegalmove()
+    puts "That was an invalid move. Try again"
   end
 
   def self.checkwin()
