@@ -3,11 +3,17 @@
 class ToH
 
   def self.gentower(height)
-    puts height
-    #our tower variables are going to go here
+    $bar1 = [] 
+    $bar2 = []
+    $bar3 = []
+    while height > 0 
+      $bar1.push(height)
+      height -= 1
+    end
   end    
 
   def self.intitialize()
+    #from here all the logic runs
     height = self.start()
     self.gentower(height)
   end
@@ -16,7 +22,7 @@ class ToH
     userinputworks = false
     puts "Welcome to Tower of Hanoi"
     puts "In this game, you will be trying to move your tower"
-    puts "From one column, to another"
+    puts "From one column, to another."
     puts "Remember, only smaller blocks can be stacked on top of bigger blocks"
     while userinputworks == false
       puts "Set your height (recommended is 5) or type quit to quit."
@@ -51,6 +57,11 @@ class ToH
 
 
   def self.makemove()
+    puts "Time to make a move."
+    puts "From where would you like to move?"
+    puts "Towers are numbered 1, 2 and 3 from left to right"
+    firstnum = gets
+    puts "#{firstnum.to_i}"
   end
 
   def self.illegalmove()
