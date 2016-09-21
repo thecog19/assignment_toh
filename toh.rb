@@ -26,6 +26,18 @@ class ToH
 
       elsif input.to_i < 0
         puts "Not a valid input. Numbers may not be negative"
+      
+      elsif input.to_i > 10
+        puts "Warning, this game will take a long time to play with so many stacks"
+        puts "Stacks may not display properly"
+        puts "Would you like to continue anyway? Y to continue anything else to pass"
+        yesorno = gets
+        if yesorno.strip == "Y"
+          puts "Proceeding"
+          return input.to_i
+        else
+          puts "OK! Not proceeding"
+        end
       else
         begin 
           Integer(input)
