@@ -6,6 +6,7 @@ class ToH
     $bar1 = [] 
     $bar2 = []
     $bar3 = []
+    $master = {1 => $bar1, 2 => $bar2, 3 => $bar3}
     while height > 0 
       $bar1.push(height)
       height -= 1
@@ -61,28 +62,54 @@ class ToH
 
 
   def self.makemove()
+    self.display()
     puts "Time to make a move."
     puts "From where would you like to move?"
     puts "Towers are numbered 1, 2 and 3 from left to right"
+
     firstnum = gets
     if (firstnum.to_i == 1)||(firstnum.to_i == 2)||(firstnum.to_i == 3)
-      puts "moving from position #{firstnum.strip} to?"
+      if $master[firstnum.to_i].empty? == true
+        self.illegalmove("empty")
+      else
+        puts "moving from position #{firstnum.strip} to?"
+        moving = $master[firstnum.to_i].pop()
+      end
     else 
       self.illegalmove()
     end
+
     secondnum = gets
     if secondnum.strip == firstnum.strip
       self.illegalmove()
     elsif (secondnum.to_i == 1)||(secondnum.to_i == 2)||(secondnum.to_i == 3)
-      puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
+      if $master[secondnum.to_i][0] == nil
+        puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
+        $master[secondnum.to_i].push(moving) 
+
+      elsif($master[firstnum.to_i][-1] > $master[secondnum.to_i][-1]) 
+      #we want the item we're moving to be smaller than the base
+        $master[firstnum.to_i].push(moving)
+        self.illegalmove("bigger")
+      else
+        puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
+        $master[secondnum.to_i].push(moving) 
+      end
     else
       self.illegalmove()
     end
-      
   end
 
-  def self.illegalmove()
-    puts "That was an invalid move. Try again"
+  def self.illegalmove(reason = "undef")
+    if reason == "undef"
+      puts "That was an invalid move. Try again"
+    elsif reason == "empty"
+      puts "There are no peices there"
+    elsif reason == "bigger"
+      puts "Only smaller peices can be placed on bigger pieces."
+    else
+      puts "That was an invalid move. Try again"
+    end
   end
 
   def self.checkwin()
@@ -92,6 +119,12 @@ class ToH
     puts "Sorry you want to leave."
     puts "See you next time"
     exit
+  end
+
+  def self.display()
+    print "\n #{$bar1}"
+    print "\n #{$bar2}"
+    print "\n #{$bar3}\n"
   end
 
 
