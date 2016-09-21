@@ -71,12 +71,15 @@ class ToH
     if (firstnum.to_i == 1)||(firstnum.to_i == 2)||(firstnum.to_i == 3)
       if $master[firstnum.to_i].empty? == true
         self.illegalmove("empty")
+        return
       else
         puts "moving from position #{firstnum.strip} to?"
         moving = $master[firstnum.to_i].pop()
       end
+      #QUIT STUFF WILL GO HERE
     else 
       self.illegalmove()
+      return
     end
 
     secondnum = gets
@@ -86,16 +89,17 @@ class ToH
       if $master[secondnum.to_i][0] == nil
         puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
         $master[secondnum.to_i].push(moving) 
-
-      elsif($master[firstnum.to_i][-1] > $master[secondnum.to_i][-1]) 
-      #we want the item we're moving to be smaller than the base
-        $master[firstnum.to_i].push(moving)
-        self.illegalmove("bigger")
+      elsif moving > $master[secondnum.to_i][-1] 
+        #we want the item we're moving to be smaller than the base
+          $master[firstnum.to_i].push(moving)
+          self.illegalmove("bigger")
       else
         puts "moving from position #{firstnum.strip} to position #{secondnum.strip}"
         $master[secondnum.to_i].push(moving) 
       end
+        #QUIT STUFF WILL GO HERE
     else
+      $master[firstnum.to_i].push(moving)
       self.illegalmove()
     end
   end
